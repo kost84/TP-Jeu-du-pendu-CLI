@@ -1,10 +1,10 @@
 package src
 
 type Sauvegarde struct {
-	Pseudo  string
-	Mot     string
-	Lettres []string
-	Essais  int
+	Pseudo  string   `json:"pseudo"`
+	Mot     string   `json:"mot"`
+	Lettres []string `json:"lettres"`
+	Essais  int      `json:"essais"`
 }
 
 func (s *Sauvegarde) Save(pseudo string, mot string, lettres []string, essais int) {
