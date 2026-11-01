@@ -2,7 +2,7 @@ package src
 
 import (
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"os"
 	"strings"
 )
@@ -21,7 +21,7 @@ func MotSelec() {
 	listemottempo, _ := os.ReadFile("mot.txt")
 	var stringmottempo string = string(listemottempo)
 	ListeMot = strings.Split(stringmottempo, "\n")
-	indexrandom := rand.Intn(len(ListeMot))
+	indexrandom := rand.IntN(len(ListeMot))
 	MotSecret = strings.ToLower(strings.TrimSpace(ListeMot[indexrandom]))
 }
 
