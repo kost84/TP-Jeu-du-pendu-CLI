@@ -56,12 +56,12 @@ func BonneLettre(lettre string, mot string) bool {
 func PlaceLettre(lettre string, mot string) {
 	var listemotProvi []string
 	var longMotProvi string
-	for range LongMot {
-		listemotProvi = append(listemotProvi, "_")
+	for c := range LongMot {
+		listemotProvi = append(listemotProvi, string(LongMot[c]))
 	}
 	for a := range mot {
-		if mot[a] == lettre[0] {
-			listemotProvi[a] = string(lettre[0])
+		if mot[a] == strings.ToLower(lettre)[0] {
+			listemotProvi[a] = strings.ToLower(lettre)
 		}
 	}
 	for b := range listemotProvi {
@@ -92,7 +92,7 @@ func StartGame() {
 		ProposLettre()
 		c := VerifLettre(LettrePropos)
 		if c == false {
-			fmt.Println("Erreur : Vous avez saisi plusieurs lettres ou aucune")
+			fmt.Println("Erreur : Vous avez saisi plusieurs lettres")
 			continue
 		} else {
 			if BonneLettre(LettrePropos, MotSecret) == true {
