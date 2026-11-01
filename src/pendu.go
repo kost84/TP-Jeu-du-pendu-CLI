@@ -39,11 +39,10 @@ var LettrePropos string
 
 func ProposLettre() bool {
 	var lettreproposs string
-	fmt.Print("Lettre proposé : ")
+	fmt.Print("Proposition : ")
 	fmt.Scanln(&lettreproposs)
-	if len(ListeTester) == 0 {
+	if lettreproposs == "!save" {
 		LettrePropos = lettreproposs
-		ListeTester = append(ListeTester, lettreproposs)
 		return true
 	}
 	for a := range ListeTester {
@@ -54,11 +53,13 @@ func ProposLettre() bool {
 		}
 	}
 	LettrePropos = lettreproposs
-	ListeTester = append(ListeTester, lettreproposs)
 	return true
 }
 
 func VerifLettre(lettre string) bool {
+	if lettre == "!save" {
+		return true
+	}
 	if len(lettre) > 1 || len(lettre) < 1 {
 		return false
 	}
@@ -117,10 +118,35 @@ func VerifWin() bool {
 	return false
 }
 
-func StartGame() {
-	SaisiPseudo()
-	MotSelec()
-	TailleMot(MotSecret)
+func StartGame(Reprendre bool) {
+	LongMot = ""
+	if Reprendre == true {
+		a := ReprendreSave()
+		Saisipseudo = a.Pseudo
+		MotSecret = a.Mot
+		ListeTester = a.ListeLettres
+		NbEssais = a.Essais
+		for _, lettre := range MotSecret {
+			stringg := string(lettre)
+			trouve := false
+			for _, valide := range ListeTester {
+				if valide == stringg {
+					trouve = true
+					break
+				}
+			}
+			if trouve {
+				LongMot += stringg
+			} else {
+				LongMot += "_"
+
+			}
+		}
+	} else {
+		SaisiPseudo()
+		MotSelec()
+		TailleMot(MotSecret)
+	}
 	for Loose == false {
 		if VerifWin() {
 			fmt.Print("\n\n")
@@ -134,19 +160,28 @@ func StartGame() {
 		fmt.Println("Nombre d'essaie restant :", NbEssais)
 		fmt.Println("Lettre proposé : ", ListeTester)
 		ProposLettre()
+		if LettrePropos == "!save" {
+			var s Sauvegarde
+			s.Save(Saisipseudo, MotSecret, ListeTester, NbEssais)
+			fmt.Println("\n\nGame Sauvegardé")
+			return
+		}
 		c := VerifLettre(LettrePropos)
 		if c == false {
 			fmt.Println("Erreur : Vous avez saisi plusieurs lettres")
 			continue
+		}
+		if LettrePropos != "" {
+			ListeTester = append(ListeTester, LettrePropos)
+		}
+		if BonneLettre(LettrePropos, MotSecret) == true {
+			PlaceLettre(LettrePropos, MotSecret)
 		} else {
-			if BonneLettre(LettrePropos, MotSecret) == true {
-				PlaceLettre(LettrePropos, MotSecret)
-			} else {
-				CheckEssais()
-				if Loose == true {
-					fmt.Print("\n")
-				}
+			CheckEssais()
+			if Loose == true {
+				fmt.Print("\n")
 			}
 		}
 	}
+
 }

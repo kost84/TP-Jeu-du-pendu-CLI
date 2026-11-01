@@ -1,6 +1,1 @@
-{
-    "pseudo" : "",
-    "mot" : "",
-    "lettre" : [],
-    "essais" : 0 
-}
+{"pseudo":"test","mot":"mathematique","lettres":["a","z","e","r"],"essais":3}
