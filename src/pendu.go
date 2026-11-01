@@ -37,9 +37,25 @@ func TailleMot(mot string) {
 
 var LettrePropos string
 
-func ProposLettre() {
+func ProposLettre() bool {
+	var lettreproposs string
 	fmt.Print("Lettre proposé : ")
-	fmt.Scanln(&LettrePropos)
+	fmt.Scanln(&lettreproposs)
+	if len(ListeTester) == 0 {
+		LettrePropos = lettreproposs
+		ListeTester = append(ListeTester, lettreproposs)
+		return true
+	}
+	for a := range ListeTester {
+		if lettreproposs == ListeTester[a] {
+			fmt.Println("Lettre déja proposé")
+			lettreproposs = ""
+			return false
+		}
+	}
+	LettrePropos = lettreproposs
+	ListeTester = append(ListeTester, lettreproposs)
+	return true
 }
 
 func VerifLettre(lettre string) bool {
@@ -85,17 +101,24 @@ func CheckEssais() {
 		NbEssais -= 1
 	}
 	if NbEssais == 0 {
-		fmt.Println("Perdu")
+		fmt.Print("\n\n")
+		fmt.Println("Plus aucun essai restant.")
+		fmt.Println("\nPerdu")
 		Loose = true
 	}
 }
+
+var ListeTester []string
 
 func StartGame() {
 	SaisiPseudo()
 	MotSelec()
 	TailleMot(MotSecret)
 	for Loose == false {
+		fmt.Print("\n")
 		fmt.Println(LongMot)
+		fmt.Println("Nombre d'essaie restant :", NbEssais)
+		fmt.Println("Lettre proposé : ", ListeTester)
 		ProposLettre()
 		c := VerifLettre(LettrePropos)
 		if c == false {
@@ -106,8 +129,8 @@ func StartGame() {
 				PlaceLettre(LettrePropos, MotSecret)
 			} else {
 				CheckEssais()
-				if NbEssais != 0 {
-					fmt.Println("Nombre d'essaie restant :", NbEssais)
+				if Loose == true {
+					fmt.Print("\n")
 				}
 			}
 		}
