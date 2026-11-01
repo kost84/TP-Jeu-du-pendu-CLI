@@ -2,6 +2,8 @@ package src
 
 import (
 	"fmt"
+	"math/rand"
+	"os"
 	"strings"
 )
 
@@ -13,9 +15,14 @@ func SaisiPseudo() {
 }
 
 var MotSecret string
+var ListeMot []string
 
 func MotSelec() {
-	MotSecret = strings.ToLower("Essaie")
+	listemottempo, _ := os.ReadFile("mot.txt")
+	var stringmottempo string = string(listemottempo)
+	ListeMot = strings.Split(stringmottempo, "\n")
+	indexrandom := rand.Intn(len(ListeMot))
+	MotSecret = strings.ToLower(strings.TrimSpace(ListeMot[indexrandom]))
 }
 
 var LongMot string
