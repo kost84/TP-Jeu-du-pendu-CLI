@@ -110,11 +110,25 @@ func CheckEssais() {
 
 var ListeTester []string
 
+func VerifWin() bool {
+	if MotSecret == LongMot {
+		return true
+	}
+	return false
+}
+
 func StartGame() {
 	SaisiPseudo()
 	MotSelec()
 	TailleMot(MotSecret)
 	for Loose == false {
+		if VerifWin() {
+			fmt.Print("\n\n")
+			fmt.Println("Vous avez gagné")
+			fmt.Println("\nLe mot secret était : ", MotSecret)
+			fmt.Print("\n")
+			break
+		}
 		fmt.Print("\n")
 		fmt.Println(LongMot)
 		fmt.Println("Nombre d'essaie restant :", NbEssais)
